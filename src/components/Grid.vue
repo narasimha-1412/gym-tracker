@@ -1,7 +1,12 @@
 <script setup>
 import { workoutProgram } from "@/utils/index.js";
 
-const { handleSelectWorkout } = defineProps({ handleSelectWorkout: Function });
+const { handleSelectWorkout, firstIncompleteWorkoutIndex, handleResetWorkout } =
+  defineProps({
+    handleSelectWorkout: Function,
+    firstIncompleteWorkoutIndex: Number,
+    handleResetWorkout: Function,
+  });
 const workoutTypes = ["Push", "Pull", "Legs"];
 </script>
 
@@ -12,7 +17,7 @@ const workoutTypes = ["Push", "Pull", "Legs"];
       :key="index"
       class="card-button plan-card"
       @click="handleSelectWorkout(index)"
-      disabled
+      :disabled="index > firstIncompleteWorkoutIndex"
     >
       <div>
         <p>Day {{ index + 1 }}</p>
@@ -21,6 +26,17 @@ const workoutTypes = ["Push", "Pull", "Legs"];
         <i class="fa-solid fa-bolt" v-if="index % 3 == 2"></i>
       </div>
       <h3>{{ workoutTypes[index % 3] }}</h3>
+    </button>
+
+    <button
+      class="card-button plan-card plan-card-reset"
+      @click="handleResetWorkout"
+      :disabled="firstIncompleteWorkoutIndex != -1"
+    >
+      <div>
+        <p>Reset</p>
+        <i class="fa-solid fa-rotate-left"></i>
+      </div>
     </button>
   </section>
 </template>

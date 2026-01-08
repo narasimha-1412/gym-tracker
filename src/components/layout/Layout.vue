@@ -24,7 +24,7 @@ footer,
 main {
   padding: 1rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 37.5rem;
   margin: 0 auto;
 }
 
@@ -49,7 +49,7 @@ footer a {
   padding-right: 0.5rem;
   background: var(--background-muted);
   border-radius: 4rem;
-  border: 1px solid transparent;
+  border: 0.0625rem solid transparent;
   transition-duration: 200ms;
   text-decoration: none;
 }
@@ -59,7 +59,7 @@ footer a:hover {
 }
 
 footer a img {
-  max-width: 30px;
+  max-width: 1.875rem;
   aspect-ratio: 1 / 1;
   border-radius: 100%;
 }

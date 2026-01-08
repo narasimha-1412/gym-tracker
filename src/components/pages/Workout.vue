@@ -6,9 +6,13 @@ import { ref, computed } from "vue";
 const { data, selectedWorkout } = defineProps({
   data: Object,
   selectedWorkout: Number,
+  isWorkoutCompleted: Boolean,
+  handleSaveWorkout: Function,
 });
 
 const { warmup, workout } = workoutProgram[selectedWorkout];
+
+const workoutType = ["Push", "Pull", "Legs"];
 
 const selectedExercise = ref(null);
 
@@ -44,7 +48,7 @@ const closePortal = () => {
         <p>Day {{ selectedWorkout + 1 }}</p>
         <i class="fa-solid fa-dumbbell"></i>
       </div>
-      <h2>{{ "Push" }} workout</h2>
+      <h2>{{ workoutType[selectedWorkout % 3] }} workout</h2>
     </div>
     <div class="workout-grid">
       <h4 class="grid-name">Warmup</h4>
@@ -85,8 +89,12 @@ const closePortal = () => {
       </div>
     </div>
     <div class="card workout-btns">
-      <button>Save & Exit <i class="fa-solid fa-save"></i></button>
-      <button>Complete <i class="fa-solid fa-check"></i></button>
+      <button @click="handleSaveWorkout">
+        Save & Exit <i class="fa-solid fa-save"></i>
+      </button>
+      <button :disabled="!isWorkoutCompleted" @click="handleSaveWorkout">
+        Complete <i class="fa-solid fa-check"></i>
+      </button>
     </div>
   </section>
 </template>
@@ -124,8 +132,8 @@ const closePortal = () => {
 
 .workout-grid-line {
   margin: 0.5rem 0;
-  height: 3px;
-  border-radius: 2px;
+  height: 0.1875rem;
+  border-radius: 0.125rem;
   background: var(--background-muted);
 }
 

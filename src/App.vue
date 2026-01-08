@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Layout from "./components/layout/Layout.vue";
 import Dashboard from "./components/pages/Dashboard.vue";
 import Welcome from "./components/pages/Welcome.vue";
@@ -17,16 +17,33 @@ for (let id in workoutProgram) {
 }
 
 const selectedPage = ref(1);
-const data = ref();
+const data = ref(deafultData);
 const selectedWorkout = ref(-1);
 
 const isWorkoutCompleted = computed(() => {
   const currWorkout = data.value?.[selectedWorkout.value];
 
-  if (!currWorkout) returnfalse;
+  if (!currWorkout) {
+    return false;
+  }
 
-  const isCompleteCheck = Object.values(currWorkout).every((ex) => !ex);
+  const isCompleteCheck = Object.values(currWorkout).every((ex) => !!ex);
   return isCompleteCheck;
+});
+
+const firstIncompleteWorkoutIndex = computed(() => {
+  const allWorkouts = data.value;
+
+  if (!allWorkouts) return -1;
+
+  for (const [indxe, workout] of Object.entries(allWorkouts)) {
+    const isCompleteCheck = Object.values(workout).every((ex) => !!ex);
+    if (!isCompleteCheck) {
+      return parseInt(indxe);
+    }
+  }
+
+  return -1;
 });
 
 function handleChangeDisplay(idx) {
@@ -45,6 +62,21 @@ function handleSaveWorkout() {
 
   selectedWorkout.value = -1;
 }
+
+function handleResetWorkout() {
+  selectedPage.value = 2;
+  selectedWorkout.value = -1;
+  data.value = deafultData;
+  localStorage.removeItem("workouts");
+}
+
+onMounted(() => {
+  const savedData = localStorage.getItem("workouts");
+  if (savedData) {
+    data.value = JSON.parse(savedData);
+    selectedPage.value = 2;
+  }
+});
 </script>
 
 <template>
@@ -54,11 +86,15 @@ function handleSaveWorkout() {
       v-if="selectedPage === 1"
     />
     <Dashboard
+      :firstIncompleteWorkoutIndex="firstIncompleteWorkoutIndex"
       :handleSelectWorkout="handleSelectWorkout"
+      :handleResetWorkout="handleResetWorkout"
       v-if="selectedPage === 2"
     />
     <Workout
-      :data="deafultData"
+      :isWorkoutCompleted="isWorkoutCompleted"
+      :handleSaveWorkout="handleSaveWorkout"
+      :data="data"
       :selectedWorkout="selectedWorkout"
       v-if="workoutProgram?.[selectedWorkout]"
     />

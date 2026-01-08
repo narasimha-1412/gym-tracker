@@ -48,7 +48,7 @@ const props = defineProps({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
+  width: 37.5rem;
   max-width: 90vw;
   max-height: 80vh;
   display: grid;
@@ -56,6 +56,6 @@ const props = defineProps({
   background: var(--background-primary);
   border-radius: var(--border-radius-small);
   padding: 1rem;
-  border: 1px solid var(--background-muted);
+  border: 0.0625rem solid var(--background-muted);
 }
 </style>
