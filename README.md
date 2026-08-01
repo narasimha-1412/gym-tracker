@@ -19,7 +19,7 @@ It helps users follow a structured **Push–Pull–Legs (PPL)** training program
   - Each exercise includes:
     - Sets
     - Reps
-    - Editable weight input
+    - Editable weight inputs
   - Easy progress entry during workouts
 
 - **Progressive Unlock System**
@@ -47,3 +47,4 @@ https://narasimha-1412.github.io/gym-tracker/
 ```sh
 npm install
 npm run dev
+```
